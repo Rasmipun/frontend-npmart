@@ -1,6 +1,7 @@
 import {
   ActionIcon,
   Button,
+  
   Container,
   createStyles,
   Drawer,
@@ -15,6 +16,9 @@ import { Link } from "react-router-dom";
 import { White } from "../logo";
 import { TbMenu2, TbSearch, TbShoppingCart } from "react-icons/tb";
 import { useState } from "react";
+import useUser from "../../hooks/useUser";
+import useAuth from "../../hooks/UseAuth";
+import { useCart } from "@react-providers/cart";
 
 const useStyles = createStyles((theme) => ({
   navbar: {
@@ -62,7 +66,10 @@ const useStyles = createStyles((theme) => ({
 
 const Navbar = () => {
   const { classes } = useStyles();
-  const [opened, setOpened] = useState(false);
+  const [opened, setOpened] = useState(false)
+  const {user, logout} = useUser()
+  const {cart} = useCart()
+ 
   return (
     <header className={classes.navbar}>
       <Container size="xl" className={classes.container}>
@@ -100,18 +107,31 @@ const Navbar = () => {
             </Group>
           </MediaQuery>
 
-          <Indicator label="4" inline size={18}>
-            <ActionIcon color="yellow" size="xl">
+          <Indicator label={cart.totalQuantity} inline size={18}>
+            <ActionIcon component={Link} to='/cart' color="yellow" size="xl">
               <TbShoppingCart className={classes.cartIcon} />
             </ActionIcon>
           </Indicator>
 
           <MediaQuery smallerThan="md" styles={{ display: "none" }}>
             <Group>
-              <Button variant="default">Sign In</Button>
-              <Button component={Link} to="/auth/register">
-                Register
+            {!user ? (
+            <>
+            <Button component={Link} to="/auth/login" variant="default">Sign In</Button>
+          <Button component={Link} to="/auth/register">
+            Register
+          </Button>
+            </>
+          ): (
+            <>
+              <Button onClick={logout}
+              >
+                logout
               </Button>
+              <Button color='blue' component={Link} to='/dashboard'>Dashboard</Button>
+            </>
+            
+          )}
             </Group>
           </MediaQuery>
 
@@ -134,8 +154,10 @@ const Navbar = () => {
 };
 
 const MobileNavbar = ({ opened, setOpened }) => {
-  const onClose = () => setOpened(false);
-  const { classes } = useStyles();
+  const onClose = () => setOpened(false)
+  const {user, logout} = useUser()
+  const { classes } = useStyles()
+ 
   return (
     <Drawer
       styles={(theme) => ({
@@ -157,10 +179,23 @@ const MobileNavbar = ({ opened, setOpened }) => {
         </form>
 
         <Stack>
-          <Button variant="default">Sign In</Button>
+          {!user ? (
+            <>
+            <Button component={Link} to="/auth/login" variant="default">Sign In</Button>
           <Button component={Link} to="/auth/register">
             Register
           </Button>
+            </>
+          ): (
+            <>
+              <Button component={Link} to="/auth/login" onClick={logout}
+              >
+                logout
+              </Button>
+              <Button color='blue' component={Link} to='/dashboard'>Dashboard</Button>
+            </>
+          )
+          }
         </Stack>
         <Group>
           <Text className={classes.navLink} component={Link} to="/">

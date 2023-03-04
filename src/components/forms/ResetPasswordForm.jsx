@@ -1,4 +1,4 @@
-import { Button, PasswordInput, Stack, Text, TextInput} from "@mantine/core";
+import { Button, PasswordInput, Stack, TextInput} from "@mantine/core";
 
 const ResetPasswordForm = () => {
   return(

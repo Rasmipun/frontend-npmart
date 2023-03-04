@@ -1,17 +1,17 @@
-import { Text, Title } from "@mantine/core";
-import ForgotPasswordForm from "../../components/forms/ForgotPasswordForm";
 
+import { Title } from "@mantine/core";
+import { Helmet } from "react-helmet";
+import ResetPasswordForm from "../../components/forms/ResetPasswordForm";
 
-
-const ForgotPassword = () => {
+const ResetPassword = () => {
   return <div>
-  <Title order={2}>Forgot Password</Title>
-  <Text size='md'>
-   No worries, Just enter your email 
-  </Text>
-
-<ForgotPasswordForm/>
-  
+     <Helmet>
+      <title>
+        Reset your Password
+      </title>
+    </Helmet>
+  <Title order={2}>Sign In</Title>
+  <ResetPasswordForm />
 </div>
 };
-export default ForgotPassword;
+export default ResetPassword;
