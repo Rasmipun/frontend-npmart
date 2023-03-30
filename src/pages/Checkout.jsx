@@ -1,7 +1,12 @@
-import { Button, Container, createStyles, Paper, SimpleGrid, TextInput, Title } from "@mantine/core";
-import { zodResolver } from "@mantine/form";
+import { Button, Container, createStyles, Paper, SimpleGrid, Text, TextInput, Title } from "@mantine/core";
+import { useForm, zodResolver } from "@mantine/form";
+import { useCart } from "@react-providers/cart";
 import { useMutation} from "@tanstack/react-query";
-import { OrderSchema } from "../Schemas/orderSchema";
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { orderSchema } from "../Schemas/orderSchema";
+import { api } from "../utils/api";
+
 
 const useStyles = createStyles ({
     form: {
@@ -13,67 +18,94 @@ const useStyles = createStyles ({
 })
 
 const CheckoutPage = () => {
-    const {classes} = useStyles()
-    const {cart} = useCart()
-
-   
-
+    const { classes } = useStyles();
+  
+    const { cart } = useCart();
+  
+    const navigate = useNavigate();
+  
     const orderMutation = useMutation({
-        mutationFn: api.orders.create,
-        onSuccess: () => {
-          toast.success("Order Success")
-         console.log("success")
-        },
-        onError: (error) => {
-          toast.error("error deleting order")
-          console.log(error);
-        },
-      });
-    
-      const form = useForm ({
-       initialValues: {
-            name: "",
-            address1: "",
-            address2: "",
-            state: "",
-            country: "",
-            zip: "",
-            city: "",
-            
-        },
-        validate: zodResolver(OrderSchema)
-    })
-   
-const handleSubmit = (values) => {
-    const submitValues = {
+      mutationFn: api.orders.create,
+      onSuccess: () => {
+        toast.success('Your Orders Have Been Placed!!!');
+        
+      },
+      onError: (e) => {
+        toast.error('Error Placing Your Order.');
+        
+      },
+    });
+  
+    const form = useForm({
+      initialValues: {
+        name: '',
+        address1: '',
+        address2: '',
+        country: '',
+        state: '',
+        city: '',
+        zip: '',
+      },
+      validate: zodResolver(orderSchema),
+    });
+  
+    const handleSubmit = (values) => {
+      const submitValues = {
         ...values,
-        items: cart.cartItems
-    }
-    orderMutation.mutate(submitValues)
-}
-
-  return (
-    <Container>
+        items: cart.cartItems,
+      };
+      orderMutation.mutate(submitValues);
+    };
+  
+    return (
+      <Container size="xl" mt="md">
         <SimpleGrid cols={3}>
-            <form onSubmit={form.onSubmit(handleSubmit)} className={classes.form}>
+          <form className={classes.form} onSubmit={form.onSubmit(handleSubmit)}>
             <Title>Checkout</Title>
-
-            <TextInput {...form.getInputProps("name")}  label='Name' />
-            <TextInput {...form.getInputProps("address1")} label='Address 1' />
-            <TextInput  {...form.getInputProps("address")}label='Address 2' />
-            <TextInput  {...form.getInputProps("city")}label='City' />
-            <TextInput  {...form.getInputProps("state")}label='State' />
-            <TextInput  {...form.getInputProps("zip")}label='Zip' />
-            <TextInput  {...form.getInputProps("country")}label='Country' />
-            <Button>Order</Button>
-            </form>
-
-            <Paper withBorder p='md'>
-                <Title order={4}>Order Summary</Title>
-                
-            </Paper>
+            <TextInput
+              label="Name"
+              placeholder=""
+              {...form.getInputProps('name')}
+            />
+            <TextInput
+              label="Country"
+              placeholder=""
+              {...form.getInputProps('country')}
+            />
+            <TextInput
+              label="State"
+              placeholder=""
+              {...form.getInputProps('state')}
+            />
+            <TextInput
+              label="City"
+              placeholder=""
+              {...form.getInputProps('city')}
+            />
+            <TextInput
+              label="Zip"
+              placeholder=""
+              {...form.getInputProps('zip')}
+            />
+            <TextInput
+              label="Address 1"
+              placeholder=""
+              {...form.getInputProps('address1')}
+            />
+            <TextInput
+              label="Address 2"
+              placeholder=""
+              {...form.getInputProps('address2')}
+            />
+            <Button type="submit">Order</Button>
+          </form>
+  
+          <Paper withBorder p="md">
+            <Title order={4}>Order Summary</Title>
+            <Text>Total: {cart.totalPrice}</Text>
+          </Paper>
         </SimpleGrid>
-    </Container>
-  )
-  }
+      </Container>
+    );
+  };
 export default CheckoutPage;

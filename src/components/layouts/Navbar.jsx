@@ -17,7 +17,7 @@ import { White } from "../logo";
 import { TbMenu2, TbSearch, TbShoppingCart } from "react-icons/tb";
 import { useState } from "react";
 import useUser from "../../hooks/useUser";
-import useAuth from "../../hooks/UseAuth";
+
 import { useCart } from "@react-providers/cart";
 
 const useStyles = createStyles((theme) => ({
@@ -130,7 +130,7 @@ const Navbar = () => {
               </Button>
               <Button color='blue' component={Link} to='/dashboard'>Dashboard</Button>
             </>
-            
+             
           )}
             </Group>
           </MediaQuery>

@@ -23,7 +23,7 @@ const useUser = () => {
 
   const logout = () =>  {
     setAccessToken(null);
-    navigate("/auth/lohin")
+    navigate("/auth/login")
   }
 
   return {

@@ -145,11 +145,19 @@ export const api = {
   
   orders: {
     getAll: () => {
-      return http.get('/orders')
+      return http.get(`/orders`);
     },
-    getOne: ({ id }) => {
-      return http.get(`/orders/${id}`)
+    create: ({ ...data }) => {
+      return http.post('/orders', data);
     },
+  },
+  payments: {
+    getOne: () => {
+      return http.get(`/payments`);
+    },
+    create: ({ ...data }) => {
+      return http.post('/payments', data);
+    },
+  },
   }
-  
-};
+

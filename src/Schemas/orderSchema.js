@@ -1,14 +1,28 @@
-import {  z } from "zod";
+import { z } from 'zod';
 
-export const OrderSchema = z.object({
-    body: z.object({
-        name: z.number().min(1, "name is required"),
-        country: z.string().min(1, "Country is required"),
-        state: z.string().min(1, "State is required"),
-        address1: z.string().min(1, "Address is required"),
-        address2: z.string.nullable(),
-        city: z.string().min(1, "city is required"),
-        zip: z.string().min(1, "zip is required"),
-        
+export const orderSchema = z.object({
+  name: z
+    .string({
+      required_error: 'Name is required.',
     })
-})
+    .min(1, 'Required'),
+  country: z
+    .string({
+      required_error: 'Country is required.',
+    })
+    .min(1, 'Required'),
+  state: z
+    .string({
+      required_error: 'State is required.',
+    })
+    .min(1, 'Required'),
+  city: z.string().min(1, 'Required'),
+  zip: z.string().min(1, 'Required'),
+  address1: z
+    .string({
+      required_error: 'Address is required.',
+    })
+    .min(1, 'Required'),
+  address2: z.string().nullable(),
+  // status: z.enum(['paid', 'unpaid']),
+});

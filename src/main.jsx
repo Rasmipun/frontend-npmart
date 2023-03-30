@@ -2,7 +2,7 @@ import { MantineProvider } from "@mantine/core";
 import { CartProvider } from "@react-providers/cart";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import React, { Children } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import { Toaster } from "react-hot-toast";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -22,9 +22,8 @@ import ProductsIndex from "./pages/dashboard/products";
 import ProductCreate from "./pages/dashboard/products/Create";
 import ProductUpdate from "./pages/dashboard/products/Edit";
 import LandingPage from "./pages/Landing";
-import OrderPage from "./pages/Order";
+import PaymentPage from "./pages/Payment";
 import ProductDescriptionPage  from "./pages/ProductDescription";
-
 import AuthProvider from "./providers/AuthProvider";
 
 const router = createBrowserRouter([
@@ -49,9 +48,10 @@ const router = createBrowserRouter([
         element: <ProductDescriptionPage />
       },
       {
-        path: "orders",
-        element: <OrderPage />
+        path: "payment",
+        element: <PaymentPage />
       },
+      
 
       {
         path: "auth",
